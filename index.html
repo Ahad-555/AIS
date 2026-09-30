@@ -3,1420 +3,766 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مراجعة نظم المعلومات المحاسبية</title>
-
+    <title>مراجعة نظم المعلومات المحاسبية - الاختبار المقالي الشامل</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Cairo', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#2563eb',
+                            600: '#1d4ed8',
+                            700: '#1e40af',
+                            800: '#1e3a8a',
+                            900: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
         body {
             font-family: 'Cairo', sans-serif;
+            background-color: #f1f5f9;
         }
-
-        .question-card {
-            transition: all 0.3s ease;
+        .custom-shadow {
+            box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.08), 0 8px 10px -6px rgba(30, 58, 138, 0.04);
         }
-
-        .question-card:hover {
-            transform: translateY(-2px);
-        }
-
-        .answer-box {
-            transition: all 0.3s ease;
-        }
-
-        .progress-bar {
-            transition: width 0.4s ease;
+        .hide-answer .answer-body {
+            display: none;
         }
     </style>
 </head>
+<body class="text-slate-800 min-h-screen flex flex-col">
 
-<body class="bg-gray-50 min-h-screen">
-
-    <!-- Header -->
-    <header class="bg-gradient-to-r from-indigo-700 to-purple-700 text-white py-8 shadow-lg">
-        <div class="max-w-6xl mx-auto px-4">
-
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-
-                <div>
-                    <h1 class="text-3xl md:text-4xl font-extrabold mb-2">
-                        مراجعة نظم المعلومات المحاسبية
-                    </h1>
-
-                    <p class="text-indigo-100 text-lg">
-                        الأسئلة المقالية — مراجعة شاملة
-                    </p>
-                </div>
-
-                <div class="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 text-center">
-                    <div class="text-sm text-indigo-100 mb-1">
-                        التقدم
-                    </div>
-
-                    <div class="text-3xl font-bold" id="progressText">
-                        0 / 18
-                    </div>
-                </div>
-
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-brand-900 via-brand-800 to-brand-700 text-white sticky top-0 z-50 shadow-lg border-b border-white/10">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex flex-wrap justify-between items-center gap-4">
+            <div>
+                <span class="bg-yellow-400 text-brand-900 text-xs font-black px-2.5 py-1 rounded-md mb-1 inline-block">بالنص الحرفي للمقرر 📘</span>
+                <h1 class="text-xl md:text-2xl font-black tracking-tight flex items-center gap-2">
+                    مراجعة نظم المعلومات المحاسبية (المقالي)
+                </h1>
+                <p class="text-xs md:text-sm text-brand-100 mt-1">شامل لكافة صفحات السلايدات والمفاهيم دون حذف</p>
             </div>
-
-            <div class="mt-6 bg-white/20 rounded-full h-3 overflow-hidden">
-                <div
-                    id="progressBar"
-                    class="progress-bar bg-white h-full rounded-full"
-                    style="width: 0%">
+            
+            <div class="flex items-center gap-3">
+                <div class="bg-white/10 backdrop-blur-md px-4 py-2 rounded-xl text-center border border-white/20">
+                    <div class="text-xs text-brand-100 font-bold">نسبة الحفظ والإنجاز</div>
+                    <div id="progressText" class="text-xl font-black text-yellow-300">0%</div>
                 </div>
             </div>
-
+        </div>
+        <!-- Progress Bar -->
+        <div class="w-full bg-black/20 h-2">
+            <div id="progressBar" class="bg-gradient-to-r from-yellow-400 to-amber-300 h-2 w-0 transition-all duration-300"></div>
         </div>
     </header>
 
+    <main class="max-w-5xl mx-auto px-4 py-6 flex-1 w-full space-y-6">
 
-    <!-- Controls -->
-    <section class="max-w-6xl mx-auto px-4 py-6">
-
-        <div class="bg-white rounded-2xl shadow-sm p-4 mb-6">
-
-            <div class="flex flex-col md:flex-row gap-4">
-
-                <!-- Search -->
-                <div class="flex-1 relative">
-
-                    <input
-                        type="text"
-                        id="searchInput"
-                        placeholder="ابحث في الأسئلة..."
-                        class="w-full border border-gray-200 rounded-xl px-4 py-3 pr-11 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    >
-
-                    <svg
-                        class="w-5 h-5 text-gray-400 absolute right-4 top-1/2 -translate-y-1/2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M21 21l-4.35-4.35m2.35-5.65a8 8 0 11-16 0 8 8 0 0116 0z"
-                        />
-                    </svg>
-
+        <!-- Controls Toolbar -->
+        <section class="bg-white p-4 md:p-5 rounded-2xl custom-shadow border border-slate-200">
+            <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
+                <!-- Search Box -->
+                <div class="relative w-full md:w-96">
+                    <input type="text" id="searchInput" onkeyup="filterQuestions()" placeholder="بحث في الأسئلة أو المفاهيم..." 
+                           class="w-full pl-4 pr-10 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm font-semibold transition-all">
+                    <span class="absolute left-3 top-3 text-slate-400 text-sm">🔍</span>
                 </div>
 
-
-                <!-- Buttons -->
-                <div class="flex gap-2">
-
-                    <button
-                        onclick="toggleAnswersMode()"
-                        id="answersToggle"
-                        class="px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-xl font-semibold text-gray-700 transition"
-                    >
-                        إخفاء الإجابات
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap gap-2 w-full md:w-auto justify-end">
+                    <button onclick="toggleAnswersMode()" id="toggleAnswersBtn" class="px-3.5 py-2 text-xs font-bold bg-amber-500 hover:bg-amber-600 text-white rounded-xl shadow-sm transition-all flex items-center gap-1.5">
+                        <span>👁️</span> <span id="toggleAnswersText">إخفاء الإجابات للتسميع</span>
                     </button>
-
-                    <button
-                        onclick="expandAll()"
-                        class="px-4 py-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl font-semibold transition"
-                    >
-                        فتح الكل
+                    <button onclick="expandAll()" class="px-3.5 py-2 text-xs font-bold bg-brand-50 text-brand-700 hover:bg-brand-100 rounded-xl transition-all border border-brand-200">
+                        توسيع الكل
                     </button>
-
-                    <button
-                        onclick="collapseAll()"
-                        class="px-4 py-3 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-xl font-semibold transition"
-                    >
-                        إغلاق الكل
+                    <button onclick="collapseAll()" class="px-3.5 py-2 text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-xl transition-all">
+                        طي الإجابات
                     </button>
-
                 </div>
-
             </div>
 
-
-            <!-- Categories -->
-            <div class="flex flex-wrap gap-2 mt-4">
-
-                <button
-                    onclick="filterCategory('all')"
-                    class="category-btn active px-4 py-2 rounded-full bg-indigo-600 text-white font-semibold"
-                >
-                    الكل
-                </button>
-
-                <button
-                    onclick="filterCategory('section-1')"
-                    class="category-btn px-4 py-2 rounded-full bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200"
-                >
-                    أساسيات النظام
-                </button>
-
-                <button
-                    onclick="filterCategory('section-2')"
-                    class="category-btn px-4 py-2 rounded-full bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200"
-                >
-                    البيانات والمستخدمون
-                </button>
-
-                <button
-                    onclick="filterCategory('section-3')"
-                    class="category-btn px-4 py-2 rounded-full bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200"
-                >
-                    أهداف وإجراءات
-                </button>
-
-                <button
-                    onclick="filterCategory('section-4')"
-                    class="category-btn px-4 py-2 rounded-full bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200"
-                >
-                    النظم المحاسبية
-                </button>
-
-                <button
-                    onclick="filterCategory('section-5')"
-                    class="category-btn px-4 py-2 rounded-full bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200"
-                >
-                    المحاسبة الإدارية
-                </button>
-
+            <!-- Category Tabs -->
+            <div class="flex flex-wrap gap-2 mt-4 pt-4 border-t border-slate-100 text-xs font-bold">
+                <button onclick="filterCategory('all')" class="cat-btn bg-brand-600 text-white px-3 py-1.5 rounded-lg transition-all">الكل</button>
+                <button onclick="filterCategory('sec1')" class="cat-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1.5 rounded-lg transition-all">1. النظام المحاسبي و MIS</button>
+                <button onclick="filterCategory('sec2')" class="cat-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1.5 rounded-lg transition-all">2. البيانات والمستخدمين</button>
+                <button onclick="filterCategory('sec3')" class="cat-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1.5 rounded-lg transition-all">3. الأهداف والإجراءات</button>
+                <button onclick="filterCategory('sec4')" class="cat-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1.5 rounded-lg transition-all">4. الأنظمة الفرعية والمخرجات</button>
+                <button onclick="filterCategory('sec5')" class="cat-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1.5 rounded-lg transition-all">5. المحاسبة الإدارية والتحليل</button>
             </div>
+        </section>
 
-        </div>
-
-
-        <!-- Questions -->
+        <!-- Questions Container -->
         <div id="questionsContainer" class="space-y-6">
 
-
-            <!-- Section 1 -->
-            <div class="section-1">
-
-                <!-- Q1 -->
-                <div class="question-card bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
-
-                    <div class="p-6">
-
-                        <div class="flex items-start gap-4">
-
-                            <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold shrink-0">
-                                1
-                            </div>
-
-                            <div class="flex-1">
-
-                                <h2 class="text-xl font-bold text-gray-800 mb-4">
-                                    عرف نظام المعلومات المحاسبي؟
-                                </h2>
-
-                                <div class="answer-box bg-indigo-50 border-r-4 border-indigo-500 rounded-xl p-5">
-
-                                    <p class="text-gray-700 leading-8">
-                                        هو مجموعة من العناصر المترابطة التي تعمل معًا لجمع ومعالجة وتخزين واسترجاع البيانات المالية وتوفير المعلومات المفيدة لاتخاذ القرارات.
-                                    </p>
-
-                                </div>
-
-                                <label class="flex items-center gap-2 mt-4 cursor-pointer">
-
-                                    <input
-                                        type="checkbox"
-                                        class="progress-check w-5 h-5 text-indigo-600 rounded"
-                                        onchange="updateProgress()"
-                                    >
-
-                                    <span class="text-gray-600">
-                                        تمت المراجعة
-                                    </span>
-
-                                </label>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
+            <!-- SECTION 1 -->
+            <div class="section-card sec1 bg-white rounded-2xl custom-shadow border border-slate-200 overflow-hidden">
+                <div class="bg-gradient-to-r from-brand-900 to-brand-700 p-4 font-extrabold text-base md:text-lg text-white flex justify-between items-center">
+                    <span class="flex items-center gap-2">📂 1. تعريف النظام المحاسبي وعلاقته بـ MIS والمستويات الإدارية</span>
+                    <span class="text-xs font-bold bg-white/20 text-white px-2.5 py-1 rounded-lg backdrop-blur-sm">الصفحات 3 - 6</span>
                 </div>
-
-
-                <!-- Q2 -->
-                <div class="question-card bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
-
-                    <div class="p-6">
-
-                        <div class="flex items-start gap-4">
-
-                            <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold shrink-0">
-                                2
-                            </div>
-
-                            <div class="flex-1">
-
-                                <h2 class="text-xl font-bold text-gray-800 mb-4">
-                                    ما هي المستويات الإدارية في المنظمة؟
-                                </h2>
-
-                                <div class="answer-box bg-indigo-50 border-r-4 border-indigo-500 rounded-xl p-5">
-
-                                    <p class="text-gray-700 leading-8">
-                                        تنقسم المستويات الإدارية إلى ثلاثة مستويات رئيسية:
-                                    </p>
-
-                                    <ul class="list-disc mr-6 mt-2 text-gray-700 leading-8">
-
-                                        <li>
-                                            الإدارة العليا: تهتم بالتخطيط الاستراتيجي واتخاذ القرارات طويلة الأجل.
-                                        </li>
-
-                                        <li>
-                                            الإدارة الوسطى: تهتم بالتخطيط التكتيكي وتنفيذ الخطط.
-                                        </li>
-
-                                        <li>
-                                            الإدارة التشغيلية: تهتم بالعمليات اليومية والقرارات التشغيلية.
-                                        </li>
-
+                <div class="p-4 md:p-6 space-y-4">
+                    
+                    <!-- Question 1 -->
+                    <div class="question-block border border-slate-200 rounded-xl p-4 bg-slate-50/50 hover:bg-white hover:border-brand-300 transition-all">
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" onchange="updateProgress()" class="q-checkbox mt-1.5 w-5 h-5 text-brand-600 rounded focus:ring-brand-500 cursor-pointer accent-brand-600">
+                            <div class="w-full">
+                                <div class="flex justify-between items-start gap-2">
+                                    <h3 class="font-bold text-slate-900 text-base md:text-lg mb-2">س1: عرّفي النظام المحاسبي ووضّحي علاقته بنظام المعلومات الإداري (MIS)؟</h3>
+                                    <button onclick="toggleSingleAnswer(this)" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded-md shrink-0 font-semibold">عرض / إخفاء</button>
+                                </div>
+                                <div class="answer-body bg-white p-4 rounded-xl border border-slate-200 text-sm text-slate-800 leading-relaxed space-y-2 mt-2 shadow-sm">
+                                    <p><strong class="text-brand-700">• التعريف الحرفي:</strong> النظام المحاسبي هو جزء مهم من نظام المعلومات الإداري (MIS) داخل الوحدة الاقتصادية، مهمته حصر وتجميع وتشغيل البيانات المالية، وتحويلها إلى معلومات مفيدة تقدم للمستخدمين داخل الوحدة الاقتصادية (كالإدارة) وخارجها (كالمستثمرين والبنوك) على حد سواء.</p>
+                                    <p><strong class="text-brand-700">• العلاقة بـ MIS:</strong></p>
+                                    <ul class="list-disc pr-5 space-y-1 text-slate-700">
+                                        <li>النظام المحاسبي هو جزء (فرع) من نظام المعلومات الإداري، أي أنه يعمل ضمنه ويغذيه بالمعلومات.</li>
+                                        <li>هو ليس بديلاً عن MIS (لا يحل محله)، وليس مستقلاً عنه (لا يعمل بمعزل عن باقي أنظمة المنشأة).</li>
+                                        <li><strong>النتيجة:</strong> يُعد النظام المحاسبي من أهم وأكبر الأنظمة الفرعية داخل نظام المعلومات الإداري، لأنه يخدم كل الأنشطة الإدارية تقريباً.</li>
                                     </ul>
-
                                 </div>
-
-                                <label class="flex items-center gap-2 mt-4 cursor-pointer">
-
-                                    <input
-                                        type="checkbox"
-                                        class="progress-check w-5 h-5 text-indigo-600 rounded"
-                                        onchange="updateProgress()"
-                                    >
-
-                                    <span class="text-gray-600">
-                                        تمت المراجعة
-                                    </span>
-
-                                </label>
-
                             </div>
-
                         </div>
+                    </div>
 
+                    <!-- Question 2 -->
+                    <div class="question-block border border-slate-200 rounded-xl p-4 bg-slate-50/50 hover:bg-white hover:border-brand-300 transition-all">
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" onchange="updateProgress()" class="q-checkbox mt-1.5 w-5 h-5 text-brand-600 rounded focus:ring-brand-500 cursor-pointer accent-brand-600">
+                            <div class="w-full">
+                                <div class="flex justify-between items-start gap-2">
+                                    <h3 class="font-bold text-slate-900 text-base md:text-lg mb-2">س2: كيف تختلف استخدامات تقارير النظام المحاسبي عبر المستويات الإدارية الثلاثة وما خصائصه؟</h3>
+                                    <button onclick="toggleSingleAnswer(this)" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded-md shrink-0 font-semibold">عرض / إخفاء</button>
+                                </div>
+                                <div class="answer-body bg-white p-4 rounded-xl border border-slate-200 text-sm text-slate-800 leading-relaxed mt-2 shadow-sm">
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                        <div class="p-3 bg-blue-50/80 rounded-xl border border-blue-200">
+                                            <div class="font-extrabold text-blue-900 border-b border-blue-200 pb-1 mb-1">1. الإدارة الدنيا</div>
+                                            <div class="text-slate-700 text-xs md:text-sm">تستخدم تقارير النظام المحاسبي <span class="font-bold text-blue-900">يومياً</span> لمتابعة سير العمل والعمليات التشغيلية اليومية بشكل مباشر ومفصل.</div>
+                                        </div>
+                                        <div class="p-3 bg-indigo-50/80 rounded-xl border border-indigo-200">
+                                            <div class="font-extrabold text-indigo-900 border-b border-indigo-200 pb-1 mb-1">2. الإدارة الوسطى</div>
+                                            <div class="text-slate-700 text-xs md:text-sm">تستخدم تقاريره <span class="font-bold text-indigo-900">الدورية</span> لتقييم أداء الأقسام وكفاءتها، ومراقبة مدى تحقيق الأهداف المرحلية.</div>
+                                        </div>
+                                        <div class="p-3 bg-purple-50/80 rounded-xl border border-purple-200">
+                                            <div class="font-extrabold text-purple-900 border-b border-purple-200 pb-1 mb-1">3. الإدارة العليا</div>
+                                            <div class="text-slate-700 text-xs md:text-sm">تستخدم تقاريره <span class="font-bold text-purple-900">التجميعية</span> لاتخاذ قرارات استراتيجية واستثمارية طويلة المدى، مثل اعتماد الموازنات الرأسمالية.</div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 p-2.5 bg-amber-50 rounded-lg border border-amber-200 text-xs font-bold text-amber-900">
+                                        📌 خصائص النظام المحاسبي: الشمول (يغطي جميع أنشطة ووظائف المنشأة دون استثناء) + خدمة جميع المستويات الإدارية بنفس الوقت كل مستوى بما يناسب قراراته.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="question-block border border-slate-200 rounded-xl p-4 bg-slate-50/50 hover:bg-white hover:border-brand-300 transition-all">
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" onchange="updateProgress()" class="q-checkbox mt-1.5 w-5 h-5 text-brand-600 rounded focus:ring-brand-500 cursor-pointer accent-brand-600">
+                            <div class="w-full">
+                                <div class="flex justify-between items-start gap-2">
+                                    <h3 class="font-bold text-slate-900 text-base md:text-lg mb-2">س3: اذكر الملاحظات المهمة الأربعة حول طبيعة النظام المحاسبي؟</h3>
+                                    <button onclick="toggleSingleAnswer(this)" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded-md shrink-0 font-semibold">عرض / إخفاء</button>
+                                </div>
+                                <div class="answer-body bg-white p-4 rounded-xl border border-slate-200 text-sm text-slate-800 leading-relaxed space-y-2 mt-2 shadow-sm">
+                                    <p>1. يتداخل النظام المحاسبي مع أنظمة فرعية أخرى داخل المنشأة (أهمها: نظام الإنتاج، نظام الأفراد، ونظام التمويل) أي أن قراراته لا تتخذ بمعزل عنها.</p>
+                                    <p>2. تركز المحاسبة أساساً على الأحداث والعمليات المالية، لكنها لم تعد تقتصر عليها فقط، بل بدأت تهتم أيضاً ببعض الأحداث غير المالية (مثل رضا العملاء أو كفاءة الإنتاج) لأنها تؤثر على القرار أيضاً.</p>
+                                    <p>3. النظام المحاسبي ليس المصدر الوحيد للمعلومات داخل المنشأة؛ فقد تعتمد الإدارة على مصادر أخرى كالتقارير التسويقية أو الإدارية إلى جانبه.</p>
+                                    <p>4. يجب أن يتوفر نظام محاسبي في كل وحدة اقتصادية بلا استثناء، سواء كان نظاماً يدويًا (دفاتر) أو نظامًا إلكترونياً متقدماً فوجوده أساسي، والفرق فقط في درجة تطوره.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
-
-
-                <!-- Q3 -->
-                <div class="question-card bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
-
-                    <div class="p-6">
-
-                        <div class="flex items-start gap-4">
-
-                            <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold shrink-0">
-                                3
-                            </div>
-
-                            <div class="flex-1">
-
-                                <h2 class="text-xl font-bold text-gray-800 mb-4">
-                                    ما العلاقة بين نظام المعلومات المحاسبي ونظام المعلومات الإداري؟
-                                </h2>
-
-                                <div class="answer-box bg-indigo-50 border-r-4 border-indigo-500 rounded-xl p-5">
-
-                                    <p class="text-gray-700 leading-8">
-                                        نظام المعلومات المحاسبي يعد جزءًا من نظام المعلومات الإداري، حيث يوفر المعلومات المالية والمحاسبية التي تساعد الإدارة في التخطيط والرقابة واتخاذ القرارات.
-                                    </p>
-
-                                </div>
-
-                                <label class="flex items-center gap-2 mt-4 cursor-pointer">
-
-                                    <input
-                                        type="checkbox"
-                                        class="progress-check w-5 h-5 text-indigo-600 rounded"
-                                        onchange="updateProgress()"
-                                    >
-
-                                    <span class="text-gray-600">
-                                        تمت المراجعة
-                                    </span>
-
-                                </label>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
             </div>
 
+            <!-- SECTION 2 -->
+            <div class="section-card sec2 bg-white rounded-2xl custom-shadow border border-slate-200 overflow-hidden">
+                <div class="bg-gradient-to-r from-brand-900 to-brand-700 p-4 font-extrabold text-base md:text-lg text-white flex justify-between items-center">
+                    <span class="flex items-center gap-2">📂 2. مستخدمو المعلومات وأنواع البيانات والمدخلات</span>
+                    <span class="text-xs font-bold bg-white/20 text-white px-2.5 py-1 rounded-lg backdrop-blur-sm">الصفحات 7 - 11</span>
+                </div>
+                <div class="p-4 md:p-6 space-y-4">
 
-            <!-- Section 2 -->
-            <div class="section-2">
-
-                <!-- Q4 -->
-                <div class="question-card bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
-
-                    <div class="p-6">
-
-                        <div class="flex items-start gap-4">
-
-                            <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold shrink-0">
-                                4
-                            </div>
-
-                            <div class="flex-1">
-
-                                <h2 class="text-xl font-bold text-gray-800 mb-4">
-                                    من هم مستخدمو المعلومات المحاسبية؟
-                                </h2>
-
-                                <div class="answer-box bg-purple-50 border-r-4 border-purple-500 rounded-xl p-5">
-
-                                    <p class="text-gray-700 leading-8 mb-3">
-                                        ينقسم مستخدمو المعلومات المحاسبية إلى:
-                                    </p>
-
-                                    <ul class="list-disc mr-6 text-gray-700 leading-8">
-
-                                        <li>
-                                            مستخدمون داخليون: مثل الإدارة والمديرين والموظفين.
-                                        </li>
-
-                                        <li>
-                                            مستخدمون خارجيون: مثل المستثمرين والدائنين والجهات الحكومية.
-                                        </li>
-
-                                    </ul>
-
+                    <!-- Question 4 -->
+                    <div class="question-block border border-slate-200 rounded-xl p-4 bg-slate-50/50 hover:bg-white hover:border-brand-300 transition-all">
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" onchange="updateProgress()" class="q-checkbox mt-1.5 w-5 h-5 text-brand-600 rounded focus:ring-brand-500 cursor-pointer accent-brand-600">
+                            <div class="w-full">
+                                <div class="flex justify-between items-start gap-2">
+                                    <h3 class="font-bold text-slate-900 text-base md:text-lg mb-2">س4: قارني بين المستخدمين الداخليين والخارجيين للمعلومات المحاسبية مع التفصيل؟</h3>
+                                    <button onclick="toggleSingleAnswer(this)" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded-md shrink-0 font-semibold">عرض / إخفاء</button>
                                 </div>
-
-                                <label class="flex items-center gap-2 mt-4 cursor-pointer">
-
-                                    <input
-                                        type="checkbox"
-                                        class="progress-check w-5 h-5 text-purple-600 rounded"
-                                        onchange="updateProgress()"
-                                    >
-
-                                    <span class="text-gray-600">
-                                        تمت المراجعة
-                                    </span>
-
-                                </label>
-
+                                <div class="answer-body bg-white p-4 rounded-xl border border-slate-200 text-sm text-slate-800 leading-relaxed grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 shadow-sm">
+                                    <div class="bg-blue-50/50 p-3.5 rounded-xl border border-blue-100">
+                                        <span class="font-black text-brand-800 block mb-1">المستخدمون الداخليون:</span>
+                                        الإدارة بمستوياتها المختلفة (دنيا، وسطى، عليا)، وهي المستخدم الأكثر اعتماداً على النظام يومياً.
+                                    </div>
+                                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                                        <span class="font-black text-brand-800 block mb-1">المستخدمون الخارجيون:</span>
+                                        <ul class="list-disc pr-4 space-y-1 text-xs md:text-sm text-slate-700">
+                                            <li><strong class="text-slate-900">المستثمرون الحاليون والمتوقعون:</strong> لتقييم جدوى استثمارهم.</li>
+                                            <li><strong class="text-slate-900">البنوك وجهات التمويل:</strong> لتقييم القدرة على السداد.</li>
+                                            <li><strong class="text-slate-900">الموردون والعملاء:</strong> لتقييم الجدارة الائتمانية والتعاملات المستقبلية.</li>
+                                            <li><strong class="text-slate-900">الجهات الحكومية والرقابية:</strong> للرقابة وجباية الضرائب والتخطيط الاقتصادي.</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
-
                         </div>
+                    </div>
 
+                    <!-- Question 5 -->
+                    <div class="question-block border border-slate-200 rounded-xl p-4 bg-slate-50/50 hover:bg-white hover:border-brand-300 transition-all">
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" onchange="updateProgress()" class="q-checkbox mt-1.5 w-5 h-5 text-brand-600 rounded focus:ring-brand-500 cursor-pointer accent-brand-600">
+                            <div class="w-full">
+                                <div class="flex justify-between items-start gap-2">
+                                    <h3 class="font-bold text-slate-900 text-base md:text-lg mb-2">س5: قارني بين المعلومات الإجبارية والمعلومات الاختيارية؟</h3>
+                                    <button onclick="toggleSingleAnswer(this)" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded-md shrink-0 font-semibold">عرض / إخفاء</button>
+                                </div>
+                                <div class="answer-body bg-white p-4 rounded-xl border border-slate-200 text-sm text-slate-800 leading-relaxed grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 shadow-sm">
+                                    <div class="border-r-4 border-red-500 bg-red-50/30 p-3 rounded-lg">
+                                        <span class="font-black text-red-700 block mb-1">معلومات إجبارية:</span>
+                                        تفرضها القوانين والجهات الرقابية على المنشأة مثل: الدفاتر المحاسبية النظامية، السجلات، والتقارير المالية الرسمية. (لا يمكن للمنشأة الاستغناء عنها بأي حال).
+                                    </div>
+                                    <div class="border-r-4 border-emerald-500 bg-emerald-50/30 p-3 rounded-lg">
+                                        <span class="font-black text-emerald-700 block mb-1">معلومات اختيارية:</span>
+                                        غير ملزمة قانونياً، تُعدّها المنشأة برغبتها لتحسين إدارتها الداخلية مثل: نظم الموازنات التخطيطية، نظم محاسبة المسؤولية، والتقارير الداخلية. (يمكن الاستمرار بدونها، لكنها مهمة جداً لتحسين جودة الأداء والقرار الإداري).
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 6 -->
+                    <div class="question-block border border-slate-200 rounded-xl p-4 bg-slate-50/50 hover:bg-white hover:border-brand-300 transition-all">
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" onchange="updateProgress()" class="q-checkbox mt-1.5 w-5 h-5 text-brand-600 rounded focus:ring-brand-500 cursor-pointer accent-brand-600">
+                            <div class="w-full">
+                                <div class="flex justify-between items-start gap-2">
+                                    <h3 class="font-bold text-slate-900 text-base md:text-lg mb-2">س6: وضي تصنيف بيانات المدخلات (الروتينية/غير الروتينية، الداخلية/الخارجية) مع القاعدة والأمثلة؟</h3>
+                                    <button onclick="toggleSingleAnswer(this)" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded-md shrink-0 font-semibold">عرض / إخفاء</button>
+                                </div>
+                                <div class="answer-body bg-white p-4 rounded-xl border border-slate-200 text-sm text-slate-800 leading-relaxed mt-2 shadow-sm space-y-3">
+                                    <p class="text-xs bg-slate-100 p-2 rounded border font-semibold text-slate-700">📌 القاعدة الأساسية: عمليات خارجية = بين المنشأة وأي طرف خارجها (عملاء، موردين، جهات حكومية). عمليات داخلية = بين أقسام المنشأة نفسها (الإنتاج، المخزون، الأجور). الروتينية = متكررة. غير الروتينية = غير معتادة أو مفاجئة.</p>
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full text-right border-collapse text-xs md:text-sm border border-slate-200">
+                                            <thead>
+                                                <tr class="bg-brand-900 text-white">
+                                                    <th class="p-2.5 font-bold border">النوع</th>
+                                                    <th class="p-2.5 font-bold border">الأمثلة والتوضيح</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="p-2.5 border font-bold text-brand-800 bg-slate-50">بيانات روتينية خارجية</td>
+                                                    <td class="p-2.5 border">عمليات متكررة تحدث مع أطراف خارج المنشأة، مثل عمليات البيع والشراء والمدفوعات والمتحصلات.</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="p-2.5 border font-bold text-brand-800 bg-amber-50/50">بيانات غير روتينية خارجية</td>
+                                                    <td class="p-2.5 border">أحداث غير متكررة مصدرها خارج المنشأة، مثل قرارات حكومية جديدة أو تغيرات مفاجئة في الأسعار أو مؤشرات السوق أو الأزمات أو الظروف غير المتوقعة.</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="p-2.5 border font-bold text-brand-800 bg-slate-50">بيانات روتينية داخلية</td>
+                                                    <td class="p-2.5 border">عمليات متكررة تحدث داخل أقسام المنشأة نفسها، مثل بيانات التكاليف والمخزون والأجور الشهرية.</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="p-2.5 border font-bold text-brand-800 bg-amber-50/50">بيانات غير روتينية داخلية</td>
+                                                    <td class="p-2.5 border">أحداث غير متكررة مصدرها داخل المنشأة، مثل قرارات إدارية جديدة أو تغييرات في السياسات والمعايير المتبعة.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 7 -->
+                    <div class="question-block border border-slate-200 rounded-xl p-4 bg-slate-50/50 hover:bg-white hover:border-brand-300 transition-all">
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" onchange="updateProgress()" class="q-checkbox mt-1.5 w-5 h-5 text-brand-600 rounded focus:ring-brand-500 cursor-pointer accent-brand-600">
+                            <div class="w-full">
+                                <div class="flex justify-between items-start gap-2">
+                                    <h3 class="font-bold text-slate-900 text-base md:text-lg mb-2">س7: ما هو شكل بيانات المدخلات ومتى تكتسب البيانات غير الروتينية أهمية أكبر؟</h3>
+                                    <button onclick="toggleSingleAnswer(this)" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded-md shrink-0 font-semibold">عرض / إخفاء</button>
+                                </div>
+                                <div class="answer-body bg-white p-4 rounded-xl border border-slate-200 text-sm text-slate-800 leading-relaxed mt-2 shadow-sm space-y-2">
+                                    <p>• <strong>شكل البيانات:</strong> غالباً ما تكون بيانات المدخلات في صورة نقدية (مبالغ مالية)، خاصة عندما تكون موجهة للاستخدام الخارجي كالتقارير المالية. لكنها قد تكون أيضاً في صورة وحدات قياس غير نقدية عندما تكون موجهة للاستخدام الإداري الداخلي (مثل: عدد ساعات العمل، وحدات الإنتاج المصنعة، أو أوزان المواد الخام).</p>
+                                    <p>• <strong>أهمية البيانات غير الروتينية:</strong> تكتسب أهمية أكبر في المواقف الاستثنائية والتغيرات المفاجئة، حيث تساعد الإدارة على التعامل مع القرارات غير المتكررة والظروف غير المعتادة التي تتطلب استجابة سريعة وتتطلب اهتماماً وتحليلاً أكبر من البيانات الروتينية المرتبطة بالعمليات اليومية المعتادة.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
-
-
-                <!-- Q5 -->
-                <div class="question-card bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
-
-                    <div class="p-6">
-
-                        <div class="flex items-start gap-4">
-
-                            <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold shrink-0">
-                                5
-                            </div>
-
-                            <div class="flex-1">
-
-                                <h2 class="text-xl font-bold text-gray-800 mb-4">
-                                    ما الفرق بين المعلومات الإلزامية والمعلومات الاختيارية؟
-                                </h2>
-
-                                <div class="answer-box bg-purple-50 border-r-4 border-purple-500 rounded-xl p-5">
-
-                                    <p class="text-gray-700 leading-8">
-                                        المعلومات الإلزامية هي المعلومات التي يجب توفيرها وفقًا للأنظمة والقوانين، بينما المعلومات الاختيارية هي المعلومات التي يتم توفيرها بناءً على حاجة الإدارة أو المستخدمين لاتخاذ القرارات.
-                                    </p>
-
-                                </div>
-
-                                <label class="flex items-center gap-2 mt-4 cursor-pointer">
-
-                                    <input
-                                        type="checkbox"
-                                        class="progress-check w-5 h-5 text-purple-600 rounded"
-                                        onchange="updateProgress()"
-                                    >
-
-                                    <span class="text-gray-600">
-                                        تمت المراجعة
-                                    </span>
-
-                                </label>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Q6 -->
-                <div class="question-card bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
-
-                    <div class="p-6">
-
-                        <div class="flex items-start gap-4">
-
-                            <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold shrink-0">
-                                6
-                            </div>
-
-                            <div class="flex-1">
-
-                                <h2 class="text-xl font-bold text-gray-800 mb-4">
-                                    ما المقصود بالبيانات؟
-                                </h2>
-
-                                <div class="answer-box bg-purple-50 border-r-4 border-purple-500 rounded-xl p-5">
-
-                                    <p class="text-gray-700 leading-8">
-                                        البيانات هي حقائق أو أرقام أو رموز خام لم تتم معالجتها، ويتم إدخالها إلى النظام ليتم معالجتها وتحويلها إلى معلومات مفيدة.
-                                    </p>
-
-                                </div>
-
-                                <label class="flex items-center gap-2 mt-4 cursor-pointer">
-
-                                    <input
-                                        type="checkbox"
-                                        class="progress-check w-5 h-5 text-purple-600 rounded"
-                                        onchange="updateProgress()"
-                                    >
-
-                                    <span class="text-gray-600">
-                                        تمت المراجعة
-                                    </span>
-
-                                </label>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Q7 -->
-                <div class="question-card bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
-
-                    <div class="p-6">
-
-                        <div class="flex items-start gap-4">
-
-                            <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold shrink-0">
-                                7
-                            </div>
-
-                            <div class="flex-1">
-
-                                <h2 class="text-xl font-bold text-gray-800 mb-4">
-                                    ما أنواع البيانات التي يتم إدخالها في النظام؟
-                                </h2>
-
-                                <div class="answer-box bg-purple-50 border-r-4 border-purple-500 rounded-xl p-5">
-
-                                    <p class="text-gray-700 leading-8 mb-3">
-                                        تشمل البيانات:
-                                    </p>
-
-                                    <ul class="list-disc mr-6 text-gray-700 leading-8">
-
-                                        <li>
-                                            بيانات مالية.
-                                        </li>
-
-                                        <li>
-                                            بيانات غير مالية.
-                                        </li>
-
-                                        <li>
-                                            بيانات داخلية.
-                                        </li>
-
-                                        <li>
-                                            بيانات خارجية.
-                                        </li>
-
-                                    </ul>
-
-                                </div>
-
-                                <label class="flex items-center gap-2 mt-4 cursor-pointer">
-
-                                    <input
-                                        type="checkbox"
-                                        class="progress-check w-5 h-5 text-purple-600 rounded"
-                                        onchange="updateProgress()"
-                                    >
-
-                                    <span class="text-gray-600">
-                                        تمت المراجعة
-                                    </span>
-
-                                </label>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
             </div>
 
+            <!-- SECTION 3 -->
+            <div class="section-card sec3 bg-white rounded-2xl custom-shadow border border-slate-200 overflow-hidden">
+                <div class="bg-gradient-to-r from-brand-900 to-brand-700 p-4 font-extrabold text-base md:text-lg text-white flex justify-between items-center">
+                    <span class="flex items-center gap-2">📂 3. أهداف النظام المحاسبي والإجراءات وسلامة النظام</span>
+                    <span class="text-xs font-bold bg-white/20 text-white px-2.5 py-1 rounded-lg backdrop-blur-sm">الصفحات 12 - 14</span>
+                </div>
+                <div class="p-4 md:p-6 space-y-4">
 
-            <!-- Section 3 -->
-            <div class="section-3">
-
-                <!-- Q8 -->
-                <div class="question-card bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
-
-                    <div class="p-6">
-
-                        <div class="flex items-start gap-4">
-
-                            <div class="w-10 h-10 rounded-xl bg-green-100 text-green-700 flex items-center justify-center font-bold shrink-0">
-                                8
-                            </div>
-
-                            <div class="flex-1">
-
-                                <h2 class="text-xl font-bold text-gray-800 mb-4">
-                                    ما أهداف نظام المعلومات المحاسبي؟
-                                </h2>
-
-                                <div class="answer-box bg-green-50 border-r-4 border-green-500 rounded-xl p-5">
-
-                                    <ul class="list-disc mr-6 text-gray-700 leading-8">
-
-                                        <li>
-                                            جمع البيانات المالية ومعالجتها.
-                                        </li>
-
-                                        <li>
-                                            توفير المعلومات اللازمة لاتخاذ القرارات.
-                                        </li>
-
-                                        <li>
-                                            دعم التخطيط والرقابة.
-                                        </li>
-
-                                        <li>
-                                            المحافظة على أصول المنظمة.
-                                        </li>
-
-                                        <li>
-                                            تحقيق الكفاءة والفعالية في العمليات.
-                                        </li>
-
-                                    </ul>
-
+                    <!-- Question 8 -->
+                    <div class="question-block border border-slate-200 rounded-xl p-4 bg-slate-50/50 hover:bg-white hover:border-brand-300 transition-all">
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" onchange="updateProgress()" class="q-checkbox mt-1.5 w-5 h-5 text-brand-600 rounded focus:ring-brand-500 cursor-pointer accent-brand-600">
+                            <div class="w-full">
+                                <div class="flex justify-between items-start gap-2">
+                                    <h3 class="font-bold text-slate-900 text-base md:text-lg mb-2">س8: ما هي الأهداف الرئيسية الثلاثة بالنظام المحاسبي؟</h3>
+                                    <button onclick="toggleSingleAnswer(this)" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded-md shrink-0 font-semibold">عرض / إخفاء</button>
                                 </div>
-
-                                <label class="flex items-center gap-2 mt-4 cursor-pointer">
-
-                                    <input
-                                        type="checkbox"
-                                        class="progress-check w-5 h-5 text-green-600 rounded"
-                                        onchange="updateProgress()"
-                                    >
-
-                                    <span class="text-gray-600">
-                                        تمت المراجعة
-                                    </span>
-
-                                </label>
-
+                                <div class="answer-body bg-white p-4 rounded-xl border border-slate-200 text-sm text-slate-800 leading-relaxed mt-2 shadow-sm space-y-3">
+                                    <div class="flex items-start gap-2">
+                                        <span class="bg-brand-600 text-white font-bold px-2 py-0.5 rounded text-xs shrink-0 mt-0.5">1</span>
+                                        <div><strong class="text-slate-900">تحديد نتائج العمليات:</strong> قياس أثر العمليات المالية وإعداد تقارير دقيقة عن نتائج نشاط المنشأة خلال فترة زمنية معينة.</div>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <span class="bg-brand-600 text-white font-bold px-2 py-0.5 rounded text-xs shrink-0 mt-0.5">2</span>
+                                        <div><strong class="text-slate-900">تتبع الأصول والالتزامات:</strong> المحافظة على أصول الوحدة الاقتصادية من الفقد أو التلاعب، وتحديد مركزها المالي بدقة في أي وقت.</div>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <span class="bg-brand-600 text-white font-bold px-2 py-0.5 rounded text-xs shrink-0 mt-0.5">3</span>
+                                        <div><strong class="text-slate-900">دعم الإدارة:</strong> تزويد الإدارة بما تحتاجه من معلومات للقيام بوظائفها الثلاث (التخطيط والرقابة، واتخاذ القرارات).</div>
+                                    </div>
+                                    <div class="bg-amber-50 p-3 rounded-lg border border-amber-200 text-amber-900 text-xs font-bold mt-2">
+                                        ⚠️ تنبيه مهم يجي بالأسئلة: النظام المحاسبي يدعم القرار بتوفير المعلومات، لكنه لا يتخذ القرار بدلاً عن الإدارة؛ فحتى مع وجود نظام محاسبي قوي وفعال، تبقى جودة القرار النهائي معتمدة على مدى سلامة استخدام الإدارة لهذه المعلومات وتفسيرها الصحيح لها - فإذا ضعفت القرارات رغم قوة النظام، فالخلل غالباً في الاستخدام لا في النظام نفسه.
+                                    </div>
+                                </div>
                             </div>
-
                         </div>
+                    </div>
 
+                    <!-- Question 9 -->
+                    <div class="question-block border border-slate-200 rounded-xl p-4 bg-slate-50/50 hover:bg-white hover:border-brand-300 transition-all">
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" onchange="updateProgress()" class="q-checkbox mt-1.5 w-5 h-5 text-brand-600 rounded focus:ring-brand-500 cursor-pointer accent-brand-600">
+                            <div class="w-full">
+                                <div class="flex justify-between items-start gap-2">
+                                    <h3 class="font-bold text-slate-900 text-base md:text-lg mb-2">س9: عرّفي الإجراءات المحاسبية وعلّلي: "إذا كانت مخرجات النظام غير دقيقة فالمشكلة ليست في المخرجات"؟</h3>
+                                    <button onclick="toggleSingleAnswer(this)" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded-md shrink-0 font-semibold">عرض / إخفاء</button>
+                                </div>
+                                <div class="answer-body bg-white p-4 rounded-xl border border-slate-200 text-sm text-slate-800 leading-relaxed mt-2 shadow-sm space-y-2">
+                                    <p>• <strong>الإجراءات المحاسبية:</strong> هي سلسلة متصلة من العمليات الكتابية والمحاسبية التي ينفذها عدد من الأفراد في أقسام مختلفة داخل الوحدة الاقتصادية، بالتتابع، حتى تنتج المعلومة النهائية.</p>
+                                    <p>• <strong>التعليل / سبب الخلل:</strong> سلامة مخرجات النظام (دقة التقارير النهائية) لا تعتمد فقط على جودة التصميم، بل تعتمد بالدرجة الأولى على <strong class="text-brand-700">سلامة المدخلات وسلامة عمليات التشغيل (المعالجة)</strong> التي مرت بها هذه البيانات.</p>
+                                    <p>فإذا كانت مخرجات النظام غير دقيقة، فإن المشكلة غالباً لا تكون في مرحلة المخرجات نفسها، بل في مرحلة سابقة لها (المدخلات أو المعالجة)؛ لذلك حتى لو اعتمد النظام على مستندات صحيحة تماماً كمدخلات، فإنه قد ينتج معلومات غير موثوقة إن كانت مرحلة المعالجة (التشغيل) بها خلل.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
-
-
-                <!-- Q9 -->
-                <div class="question-card bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
-
-                    <div class="p-6">
-
-                        <div class="flex items-start gap-4">
-
-                            <div class="w-10 h-10 rounded-xl bg-green-100 text-green-700 flex items-center justify-center font-bold shrink-0">
-                                9
-                            </div>
-
-                            <div class="flex-1">
-
-                                <h2 class="text-xl font-bold text-gray-800 mb-4">
-                                    ما المقصود بالإجراءات؟
-                                </h2>
-
-                                <div class="answer-box bg-green-50 border-r-4 border-green-500 rounded-xl p-5">
-
-                                    <p class="text-gray-700 leading-8">
-                                        الإجراءات هي مجموعة الخطوات والتعليمات التي يتم اتباعها لتنفيذ الأعمال والعمليات داخل المنظمة بطريقة منظمة.
-                                    </p>
-
-                                </div>
-
-                                <label class="flex items-center gap-2 mt-4 cursor-pointer">
-
-                                    <input
-                                        type="checkbox"
-                                        class="progress-check w-5 h-5 text-green-600 rounded"
-                                        onchange="updateProgress()"
-                                    >
-
-                                    <span class="text-gray-600">
-                                        تمت المراجعة
-                                    </span>
-
-                                </label>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
             </div>
 
-
-            <!-- Section 4 -->
-            <div class="section-4">
-
-                <!-- Q10 -->
-                <div class="question-card bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
-
-                    <div class="p-6">
-
-                        <div class="flex items-start gap-4">
-
-                            <div class="w-10 h-10 rounded-xl bg-orange-100 text-orange-700 flex items-center justify-center font-bold shrink-0">
-                                10
-                            </div>
-
-                            <div class="flex-1">
-
-                                <h2 class="text-xl font-bold text-gray-800 mb-4">
-                                    ما هي النظم الفرعية لنظام المعلومات المحاسبي؟
-                                </h2>
-
-                                <div class="answer-box bg-orange-50 border-r-4 border-orange-500 rounded-xl p-5">
-
-                                    <p class="text-gray-700 leading-8 mb-3">
-                                        تشمل النظم الفرعية:
-                                    </p>
-
-                                    <ul class="list-disc mr-6 text-gray-700 leading-8">
-
-                                        <li>
-                                            نظام المبيعات والتحصيل.
-                                        </li>
-
-                                        <li>
-                                            نظام المشتريات والمدفوعات.
-                                        </li>
-
-                                        <li>
-                                            نظام الإنتاج.
-                                        </li>
-
-                                        <li>
-                                            نظام الرواتب والأجور.
-                                        </li>
-
-                                        <li>
-                                            نظام الأصول الثابتة.
-                                        </li>
-
-                                    </ul>
-
-                                </div>
-
-                                <label class="flex items-center gap-2 mt-4 cursor-pointer">
-
-                                    <input
-                                        type="checkbox"
-                                        class="progress-check w-5 h-5 text-orange-600 rounded"
-                                        onchange="updateProgress()"
-                                    >
-
-                                    <span class="text-gray-600">
-                                        تمت المراجعة
-                                    </span>
-
-                                </label>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
+            <!-- SECTION 4 -->
+            <div class="section-card sec4 bg-white rounded-2xl custom-shadow border border-slate-200 overflow-hidden">
+                <div class="bg-gradient-to-r from-brand-900 to-brand-700 p-4 font-extrabold text-base md:text-lg text-white flex justify-between items-center">
+                    <span class="flex items-center gap-2">📂 4. الأنظمة الفرعية، المراحل، المخرجات والخصائص</span>
+                    <span class="text-xs font-bold bg-white/20 text-white px-2.5 py-1 rounded-lg backdrop-blur-sm">الصفحات 15 - 22</span>
                 </div>
+                <div class="p-4 md:p-6 space-y-4">
 
-
-                <!-- Q11 -->
-                <div class="question-card bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
-
-                    <div class="p-6">
-
-                        <div class="flex items-start gap-4">
-
-                            <div class="w-10 h-10 rounded-xl bg-orange-100 text-orange-700 flex items-center justify-center font-bold shrink-0">
-                                11
-                            </div>
-
-                            <div class="flex-1">
-
-                                <h2 class="text-xl font-bold text-gray-800 mb-4">
-                                    ما هي مراحل معالجة البيانات؟
-                                </h2>
-
-                                <div class="answer-box bg-orange-50 border-r-4 border-orange-500 rounded-xl p-5">
-
-                                    <ol class="list-decimal mr-6 text-gray-700 leading-8">
-
-                                        <li>
-                                            إدخال البيانات.
-                                        </li>
-
-                                        <li>
-                                            معالجة البيانات.
-                                        </li>
-
-                                        <li>
-                                            تخزين البيانات.
-                                        </li>
-
-                                        <li>
-                                            إخراج المعلومات.
-                                        </li>
-
+                    <!-- Question 10 -->
+                    <div class="question-block border border-slate-200 rounded-xl p-4 bg-slate-50/50 hover:bg-white hover:border-brand-300 transition-all">
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" onchange="updateProgress()" class="q-checkbox mt-1.5 w-5 h-5 text-brand-600 rounded focus:ring-brand-500 cursor-pointer accent-brand-600">
+                            <div class="w-full">
+                                <div class="flex justify-between items-start gap-2">
+                                    <h3 class="font-bold text-slate-900 text-base md:text-lg mb-2">س10: اذكُري الأنظمة الفرعية الخمسة للنظام المحاسبي ووظيفة كل نظام؟</h3>
+                                    <button onclick="toggleSingleAnswer(this)" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded-md shrink-0 font-semibold">عرض / إخفاء</button>
+                                </div>
+                                <div class="answer-body bg-white p-4 rounded-xl border border-slate-200 text-sm text-slate-800 leading-relaxed mt-2 shadow-sm space-y-2">
+                                    <p class="text-xs text-slate-500 font-bold mb-1">💡 جميع هذه الأنظمة الفرعية الخمسة مترابطة ومتكاملة، وتعمل معاً بتنسيق تام لضمان كفاءة النظام المحاسبي ككل:</p>
+                                    <ol class="list-decimal pr-5 space-y-1 text-slate-800">
+                                        <li><strong>نظام الحسابات العامة:</strong> تصنيف الحسابات، وتنظيم دفاتر اليومية والأستاذ، وإعداد القوائم المالية الختامية.</li>
+                                        <li><strong>نظام المبيعات والمتحصلات النقدية:</strong> إدارة عمليات البيع، ومتابعة حسابات العملاء، وتحصيل النقدية، وإدارة سياسة الائتمان الممنوح لهم.</li>
+                                        <li><strong>نظام المشتريات والمدفوعات النقدية:</strong> إدارة عمليات الشراء من الموردين، وسداد المستحقات والمدفوعات لهم في مواعيدها.</li>
+                                        <li><strong>نظام التكاليف:</strong> تتبع تكاليف الإنتاج وقياسها بدقة، والرقابة على مستويات المخزون.</li>
+                                        <li><strong>نظام الأجور:</strong> احتساب أجور ومرتبات العاملين وصرفها بشكل دوري ومنتظم.</li>
                                     </ol>
-
                                 </div>
-
-                                <label class="flex items-center gap-2 mt-4 cursor-pointer">
-
-                                    <input
-                                        type="checkbox"
-                                        class="progress-check w-5 h-5 text-orange-600 rounded"
-                                        onchange="updateProgress()"
-                                    >
-
-                                    <span class="text-gray-600">
-                                        تمت المراجعة
-                                    </span>
-
-                                </label>
-
                             </div>
-
                         </div>
+                    </div>
 
+                    <!-- Question 11 -->
+                    <div class="question-block border border-slate-200 rounded-xl p-4 bg-slate-50/50 hover:bg-white hover:border-brand-300 transition-all">
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" onchange="updateProgress()" class="q-checkbox mt-1.5 w-5 h-5 text-brand-600 rounded focus:ring-brand-500 cursor-pointer accent-brand-600">
+                            <div class="w-full">
+                                <div class="flex justify-between items-start gap-2">
+                                    <h3 class="font-bold text-slate-900 text-base md:text-lg mb-2">س11: اذكُري مراحل النظام المحاسبي الثلاث مع التوضيح المختصر؟</h3>
+                                    <button onclick="toggleSingleAnswer(this)" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded-md shrink-0 font-semibold">عرض / إخفاء</button>
+                                </div>
+                                <div class="answer-body bg-white p-4 rounded-xl border border-slate-200 text-sm text-slate-800 leading-relaxed mt-2 shadow-sm grid grid-cols-1 md:grid-cols-3 gap-3">
+                                    <div class="p-3 bg-slate-50 border rounded-xl">
+                                        <div class="font-black text-brand-800 mb-1">1. المدخلات</div>
+                                        <div class="text-xs text-slate-700">جمع بيانات العمليات الاقتصادية التي يمكن التعبير عنها مالياً، كنقطة انطلاق النظام.</div>
+                                    </div>
+                                    <div class="p-3 bg-slate-50 border rounded-xl">
+                                        <div class="font-black text-brand-800 mb-1">2. المعالجة (التشغيل)</div>
+                                        <div class="text-xs text-slate-700">تحويل البيانات الخام إلى معلومات محاسبية منظمة ومفيدة عبر إجراءات المعالجة المتعاقبة.</div>
+                                    </div>
+                                    <div class="p-3 bg-slate-50 border rounded-xl">
+                                        <div class="font-black text-brand-800 mb-1">3. المخرجات</div>
+                                        <div class="text-xs text-slate-700">تقارير وقوائم مالية جاهزة تقدم لمتخذي القرار لتساعدهم على اتخاذ قراراتهم.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 12 -->
+                    <div class="question-block border border-slate-200 rounded-xl p-4 bg-slate-50/50 hover:bg-white hover:border-brand-300 transition-all">
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" onchange="updateProgress()" class="q-checkbox mt-1.5 w-5 h-5 text-brand-600 rounded focus:ring-brand-500 cursor-pointer accent-brand-600">
+                            <div class="w-full">
+                                <div class="flex justify-between items-start gap-2">
+                                    <h3 class="font-bold text-slate-900 text-base md:text-lg mb-2">س12: قارني بين المحاسبة المالية والمحاسبة الإدارية، وبين القوائم والتقارير المالية؟</h3>
+                                    <button onclick="toggleSingleAnswer(this)" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded-md shrink-0 font-semibold">عرض / إخفاء</button>
+                                </div>
+                                <div class="answer-body bg-white p-4 rounded-xl border border-slate-200 text-sm text-slate-800 leading-relaxed mt-2 shadow-sm space-y-3">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        <div class="p-3 bg-slate-50 border rounded-xl">
+                                            <div class="font-bold text-brand-800 border-b pb-1 mb-1">المحاسبة المالية:</div>
+                                            <p>• تركز أساساً على تزويد المستخدمين الخارجيين بالمعلومات (كالمستثمرين والبنوك).</p>
+                                            <p>• هدفها الأساسي: تحديد نتيجة نشاط المنشأة (ربح أو خسارة) خلال فترة مالية محددة.</p>
+                                        </div>
+                                        <div class="p-3 bg-slate-50 border rounded-xl">
+                                            <div class="font-bold text-brand-800 border-b pb-1 mb-1">المحاسبة الإدارية:</div>
+                                            <p>• تركز فقط على الاستخدام الداخلي لخدمة الإدارة.</p>
+                                            <p>• هدفها الأساسي: دعم الإدارة في اتخاذ القرارات التخطيطية والرقابية.</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 bg-blue-50/50 border border-blue-100 rounded-xl space-y-1">
+                                        <div><strong class="text-blue-900">القوائم المالية:</strong> العنصر الأساسي والرسمي للإفصاح المالي الخارجي (قائمة الدخل، المركز المالي، التدفقات النقدية، حقوق الملكية).</div>
+                                        <div><strong class="text-blue-900">التقارير المالية:</strong> مفهوم أوسع يشمل القوائم المالية + معلومات إضافية تحليلية (توقعات الأرباح، الخطط المستقبلية، تقارير تحليل الأداء، تقرير المراجع).</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 13 -->
+                    <div class="question-block border border-slate-200 rounded-xl p-4 bg-slate-50/50 hover:bg-white hover:border-brand-300 transition-all">
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" onchange="updateProgress()" class="q-checkbox mt-1.5 w-5 h-5 text-brand-600 rounded focus:ring-brand-500 cursor-pointer accent-brand-600">
+                            <div class="w-full">
+                                <div class="flex justify-between items-start gap-2">
+                                    <h3 class="font-bold text-slate-900 text-base md:text-lg mb-2">س13: ما هي خصائص مخرجات نظام المعلومات المحاسبي الأربعة؟</h3>
+                                    <button onclick="toggleSingleAnswer(this)" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded-md shrink-0 font-semibold">عرض / إخفاء</button>
+                                </div>
+                                <div class="answer-body bg-white p-4 rounded-xl border border-slate-200 text-sm text-slate-800 leading-relaxed mt-2 shadow-sm">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        <div class="p-2.5 border rounded-lg bg-slate-50">
+                                            <strong class="text-brand-800">1. الملاءمة:</strong> أن تكون المعلومات ذات صلة مباشرة بالقرار المراد اتخاذه.
+                                        </div>
+                                        <div class="p-2.5 border rounded-lg bg-slate-50">
+                                            <strong class="text-brand-800">2. إمكانية الاعتماد عليها:</strong> أن تكون المعلومات موثوقة وخالية من التحيز أو الأخطاء الجوهرية.
+                                        </div>
+                                        <div class="p-2.5 border rounded-lg bg-slate-50">
+                                            <strong class="text-brand-800">3. القدرة على الفهم:</strong> أن تُعرض المعلومات بشكل واضح يستطيع المستخدم استيعابه دون لبس.
+                                        </div>
+                                        <div class="p-2.5 border rounded-lg bg-slate-50">
+                                            <strong class="text-brand-800">4. القابلية للمقارنة:</strong> إمكانية مقارنة المعلومات زمنياً (بين فترات مختلفة لنفس المنشأة) أو مكانيًا (بين منشآت مختلفة).
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 text-xs bg-slate-100 p-2 rounded text-slate-600 font-bold">
+                                        • خطوات الدورة المحاسبية للتذكير: 1. إعداد المستندات 2. التسجيل في اليومية 3. الترحيل للأستاذ 4. ميزان المراجعة 5. قيود التسوية 6. ميزان المراجعة المعدل 7. القوائم المالية 8. إقفال الحسابات المؤقتة.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
-
-
-                <!-- Q12 -->
-                <div class="question-card bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
-
-                    <div class="p-6">
-
-                        <div class="flex items-start gap-4">
-
-                            <div class="w-10 h-10 rounded-xl bg-orange-100 text-orange-700 flex items-center justify-center font-bold shrink-0">
-                                12
-                            </div>
-
-                            <div class="flex-1">
-
-                                <h2 class="text-xl font-bold text-gray-800 mb-4">
-                                    ما الفرق بين المحاسبة المالية والمحاسبة الإدارية؟
-                                </h2>
-
-                                <div class="answer-box bg-orange-50 border-r-4 border-orange-500 rounded-xl p-5">
-
-                                    <p class="text-gray-700 leading-8 mb-3">
-                                        المحاسبة المالية تهتم بتوفير المعلومات المالية للمستخدمين الخارجيين وإعداد القوائم المالية، بينما المحاسبة الإدارية تهتم بتوفير المعلومات للإدارة الداخلية لمساعدتها في التخطيط والرقابة واتخاذ القرارات.
-                                    </p>
-
-                                </div>
-
-                                <label class="flex items-center gap-2 mt-4 cursor-pointer">
-
-                                    <input
-                                        type="checkbox"
-                                        class="progress-check w-5 h-5 text-orange-600 rounded"
-                                        onchange="updateProgress()"
-                                    >
-
-                                    <span class="text-gray-600">
-                                        تمت المراجعة
-                                    </span>
-
-                                </label>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Q13 -->
-                <div class="question-card bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
-
-                    <div class="p-6">
-
-                        <div class="flex items-start gap-4">
-
-                            <div class="w-10 h-10 rounded-xl bg-orange-100 text-orange-700 flex items-center justify-center font-bold shrink-0">
-                                13
-                            </div>
-
-                            <div class="flex-1">
-
-                                <h2 class="text-xl font-bold text-gray-800 mb-4">
-                                    ما خصائص المعلومات الجيدة؟
-                                </h2>
-
-                                <div class="answer-box bg-orange-50 border-r-4 border-orange-500 rounded-xl p-5">
-
-                                    <ul class="list-disc mr-6 text-gray-700 leading-8">
-
-                                        <li>
-                                            الدقة.
-                                        </li>
-
-                                        <li>
-                                            الملاءمة.
-                                        </li>
-
-                                        <li>
-                                            التوقيت المناسب.
-                                        </li>
-
-                                        <li>
-                                            الوضوح.
-                                        </li>
-
-                                        <li>
-                                            إمكانية الاعتماد عليها.
-                                        </li>
-
-                                    </ul>
-
-                                </div>
-
-                                <label class="flex items-center gap-2 mt-4 cursor-pointer">
-
-                                    <input
-                                        type="checkbox"
-                                        class="progress-check w-5 h-5 text-orange-600 rounded"
-                                        onchange="updateProgress()"
-                                    >
-
-                                    <span class="text-gray-600">
-                                        تمت المراجعة
-                                    </span>
-
-                                </label>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
             </div>
 
-
-            <!-- Section 5 -->
-            <div class="section-5">
-
-                <!-- Q14 -->
-                <div class="question-card bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
-
-                    <div class="p-6">
-
-                        <div class="flex items-start gap-4">
-
-                            <div class="w-10 h-10 rounded-xl bg-pink-100 text-pink-700 flex items-center justify-center font-bold shrink-0">
-                                14
-                            </div>
-
-                            <div class="flex-1">
-
-                                <h2 class="text-xl font-bold text-gray-800 mb-4">
-                                    ما المقصود بالمحاسبة الإدارية؟
-                                </h2>
-
-                                <div class="answer-box bg-pink-50 border-r-4 border-pink-500 rounded-xl p-5">
-
-                                    <p class="text-gray-700 leading-8">
-                                        هي عملية تحديد وقياس وتجميع وتحليل وتفسير وتوصيل المعلومات المالية وغير المالية للإدارة لمساعدتها في التخطيط والرقابة واتخاذ القرارات.
-                                    </p>
-
-                                </div>
-
-                                <label class="flex items-center gap-2 mt-4 cursor-pointer">
-
-                                    <input
-                                        type="checkbox"
-                                        class="progress-check w-5 h-5 text-pink-600 rounded"
-                                        onchange="updateProgress()"
-                                    >
-
-                                    <span class="text-gray-600">
-                                        تمت المراجعة
-                                    </span>
-
-                                </label>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
+            <!-- SECTION 5 -->
+            <div class="section-card sec5 bg-white rounded-2xl custom-shadow border border-slate-200 overflow-hidden">
+                <div class="bg-gradient-to-r from-brand-900 to-brand-700 p-4 font-extrabold text-base md:text-lg text-white flex justify-between items-center">
+                    <span class="flex items-center gap-2">📂 5. المحاسبة الإدارية، الموازنات، التكاليف، المسؤولية والتحليل المالي</span>
+                    <span class="text-xs font-bold bg-white/20 text-white px-2.5 py-1 rounded-lg backdrop-blur-sm">الصفحات 23 - 36</span>
                 </div>
+                <div class="p-4 md:p-6 space-y-4">
 
-
-                <!-- Q15 -->
-                <div class="question-card bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
-
-                    <div class="p-6">
-
-                        <div class="flex items-start gap-4">
-
-                            <div class="w-10 h-10 rounded-xl bg-pink-100 text-pink-700 flex items-center justify-center font-bold shrink-0">
-                                15
-                            </div>
-
-                            <div class="flex-1">
-
-                                <h2 class="text-xl font-bold text-gray-800 mb-4">
-                                    ما المقصود بالموازنة؟
-                                </h2>
-
-                                <div class="answer-box bg-pink-50 border-r-4 border-pink-500 rounded-xl p-5">
-
-                                    <p class="text-gray-700 leading-8">
-                                        الموازنة هي خطة مالية كمية لفترة مستقبلية محددة، تستخدم للتخطيط والرقابة وتحديد الإيرادات والمصروفات المتوقعة.
-                                    </p>
-
+                    <!-- Question 14 -->
+                    <div class="question-block border border-slate-200 rounded-xl p-4 bg-slate-50/50 hover:bg-white hover:border-brand-300 transition-all">
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" onchange="updateProgress()" class="q-checkbox mt-1.5 w-5 h-5 text-brand-600 rounded focus:ring-brand-500 cursor-pointer accent-brand-600">
+                            <div class="w-full">
+                                <div class="flex justify-between items-start gap-2">
+                                    <h3 class="font-bold text-slate-900 text-base md:text-lg mb-2">س14: ما مفهوم نظام المحاسبة الإدارية وأهدافه الثلاثة والنظم الفرعية التابعة له؟</h3>
+                                    <button onclick="toggleSingleAnswer(this)" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded-md shrink-0 font-semibold">عرض / إخفاء</button>
                                 </div>
-
-                                <label class="flex items-center gap-2 mt-4 cursor-pointer">
-
-                                    <input
-                                        type="checkbox"
-                                        class="progress-check w-5 h-5 text-pink-600 rounded"
-                                        onchange="updateProgress()"
-                                    >
-
-                                    <span class="text-gray-600">
-                                        تمت المراجعة
-                                    </span>
-
-                                </label>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Q16 -->
-                <div class="question-card bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
-
-                    <div class="p-6">
-
-                        <div class="flex items-start gap-4">
-
-                            <div class="w-10 h-10 rounded-xl bg-pink-100 text-pink-700 flex items-center justify-center font-bold shrink-0">
-                                16
-                            </div>
-
-                            <div class="flex-1">
-
-                                <h2 class="text-xl font-bold text-gray-800 mb-4">
-                                    ما الفرق بين التكاليف الثابتة والتكاليف المتغيرة؟
-                                </h2>
-
-                                <div class="answer-box bg-pink-50 border-r-4 border-pink-500 rounded-xl p-5">
-
-                                    <p class="text-gray-700 leading-8">
-                                        التكاليف الثابتة هي التكاليف التي لا تتغير بتغير حجم النشاط في المدى القصير، بينما التكاليف المتغيرة تتغير بتغير حجم النشاط.
-                                    </p>
-
-                                </div>
-
-                                <label class="flex items-center gap-2 mt-4 cursor-pointer">
-
-                                    <input
-                                        type="checkbox"
-                                        class="progress-check w-5 h-5 text-pink-600 rounded"
-                                        onchange="updateProgress()"
-                                    >
-
-                                    <span class="text-gray-600">
-                                        تمت المراجعة
-                                    </span>
-
-                                </label>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Q17 -->
-                <div class="question-card bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
-
-                    <div class="p-6">
-
-                        <div class="flex items-start gap-4">
-
-                            <div class="w-10 h-10 rounded-xl bg-pink-100 text-pink-700 flex items-center justify-center font-bold shrink-0">
-                                17
-                            </div>
-
-                            <div class="flex-1">
-
-                                <h2 class="text-xl font-bold text-gray-800 mb-4">
-                                    ما هي مراكز المسؤولية؟
-                                </h2>
-
-                                <div class="answer-box bg-pink-50 border-r-4 border-pink-500 rounded-xl p-5">
-
-                                    <p class="text-gray-700 leading-8 mb-3">
-                                        هي وحدات تنظيمية يكون مديرها مسؤولًا عن مجموعة محددة من الأنشطة والنتائج، ومن أهم أنواعها:
-                                    </p>
-
-                                    <ul class="list-disc mr-6 text-gray-700 leading-8">
-
-                                        <li>
-                                            مركز التكلفة.
-                                        </li>
-
-                                        <li>
-                                            مركز الإيرادات.
-                                        </li>
-
-                                        <li>
-                                            مركز الربحية.
-                                        </li>
-
-                                        <li>
-                                            مركز الاستثمار.
-                                        </li>
-
+                                <div class="answer-body bg-white p-4 rounded-xl border border-slate-200 text-sm text-slate-800 leading-relaxed mt-2 shadow-sm space-y-2">
+                                    <p>• <strong>المفهوم والهدف:</strong> تطويع البيانات المتاحة وتحليلها، ثم إخراجها في شكل يساعد الإدارة فعلياً على اتخاذ القرار الداخلي.</p>
+                                    <p>• <strong>الأهداف الثلاثة:</strong> 1. التخطيط للمستقبل. 2. الرقابة على التنفيذ. 3. تقييم الأداء الفعلي مقارنة بالمخطط.</p>
+                                    <p>• <strong>النظم الفرعية الأربعة:</strong></p>
+                                    <ul class="list-disc pr-5 space-y-1 text-slate-800">
+                                        <li><strong>نظام الموازنات التخطيطية:</strong> تقدير كمي ومالي ونقدي لما تخطط له المنشأة في المستقبل، يُستخدم كأداة تخطيط ورقابة معاً.</li>
+                                        <li><strong>نظام محاسبة التكاليف:</strong> قياس التكاليف الفعلية وتخطيطها مسبقاً، والرقابة عليها لدعم قرارات الشراء والإنتاج والتسعير.</li>
+                                        <li><strong>نظام محاسبة المسؤولية:</strong> تقسيم المنشأة إلى مراكز مسؤولية (تكلفة، ربحية، استثمار) لتحديد المسؤوليات وتحليل أسباب الانحرافات.</li>
+                                        <li><strong>التحليل المالي:</strong> دراسة القوائم المالية بعد تبويبها باستخدام أساليب تحليلية مختلفة، لفهم أداء المنشأة والتنبؤ بمستقبلها.</li>
                                     </ul>
-
                                 </div>
-
-                                <label class="flex items-center gap-2 mt-4 cursor-pointer">
-
-                                    <input
-                                        type="checkbox"
-                                        class="progress-check w-5 h-5 text-pink-600 rounded"
-                                        onchange="updateProgress()"
-                                    >
-
-                                    <span class="text-gray-600">
-                                        تمت المراجعة
-                                    </span>
-
-                                </label>
-
                             </div>
-
                         </div>
+                    </div>
 
+                    <!-- Question 15 -->
+                    <div class="question-block border border-slate-200 rounded-xl p-4 bg-slate-50/50 hover:bg-white hover:border-brand-300 transition-all">
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" onchange="updateProgress()" class="q-checkbox mt-1.5 w-5 h-5 text-brand-600 rounded focus:ring-brand-500 cursor-pointer accent-brand-600">
+                            <div class="w-full">
+                                <div class="flex justify-between items-start gap-2">
+                                    <h3 class="font-bold text-slate-900 text-base md:text-lg mb-2">س15: قارني بين الموازنة التخطيطية والمعيار؟ وما أنواع الموازنات من حيث الفترة الزمنية؟</h3>
+                                    <button onclick="toggleSingleAnswer(this)" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded-md shrink-0 font-semibold">عرض / إخفاء</button>
+                                </div>
+                                <div class="answer-body bg-white p-4 rounded-xl border border-slate-200 text-sm text-slate-800 leading-relaxed mt-2 shadow-sm space-y-3">
+                                    <p>• <strong>الفرق بين الموازنة والمعيار:</strong> المعايير تمثل مستويات كفاءة محددة مسبقاً يُفترض تحقيقها (<span class="text-brand-700 font-bold">كم يجب أن تكون التكلفة</span>)، بينما الموازنات تمثل توقعات الإدارة المستقبلية الشاملة (<span class="text-brand-700 font-bold">كم سيكون حجم النشاط والإيرادات والمصروفات كلها</span>).</p>
+
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full text-right border-collapse text-xs md:text-sm border border-slate-200">
+                                            <thead>
+                                                <tr class="bg-brand-900 text-white">
+                                                    <th class="p-2 border">النوع</th>
+                                                    <th class="p-2 border">المدة والتوضيح</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="p-2 border font-bold text-brand-800">قصيرة الأجل</td>
+                                                    <td class="p-2 border">عادة سنة واحدة (12 شهراً)، وهي الأكثر تفصيلاً وارتباطاً بالتنفيذ الفوري.</td>
+                                                </tr>
+                                                <tr class="bg-slate-50">
+                                                    <td class="p-2 border font-bold text-brand-800">متوسطة الأجل</td>
+                                                    <td class="p-2 border">تمتد من سنة واحدة إلى 5 سنوات، وتربط بين الخطط قصيرة وطويلة الأجل.</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="p-2 border font-bold text-brand-800">طويلة الأجل</td>
+                                                    <td class="p-2 border">قد تصل إلى 10 سنوات، وترتبط بالأهداف الاستراتيجية العامة للمنشأة.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <p class="text-xs text-slate-600 font-semibold">• دور المحاسب الإداري بالموازنة: التنسيق بين موازنات الأقسام المختلفة، متابعة تنفيذها أولاً بأول، ومقارنة النتائج الفعلية بالمخطط لها بشكل دوري.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 16 -->
+                    <div class="question-block border border-slate-200 rounded-xl p-4 bg-slate-50/50 hover:bg-white hover:border-brand-300 transition-all">
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" onchange="updateProgress()" class="q-checkbox mt-1.5 w-5 h-5 text-brand-600 rounded focus:ring-brand-500 cursor-pointer accent-brand-600">
+                            <div class="w-full">
+                                <div class="flex justify-between items-start gap-2">
+                                    <h3 class="font-bold text-slate-900 text-base md:text-lg mb-2">س16: ما وظائف نظام التكاليف، القيمة المضافة، وعناصر التكاليف الصناعية الثلاثة؟</h3>
+                                    <button onclick="toggleSingleAnswer(this)" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded-md shrink-0 font-semibold">عرض / إخفاء</button>
+                                </div>
+                                <div class="answer-body bg-white p-4 rounded-xl border border-slate-200 text-sm text-slate-800 leading-relaxed mt-2 shadow-sm space-y-2">
+                                    <p>• <strong>وظائف نظام التكاليف:</strong> قياس التكاليف الفعلية، وتخطيطها مسبقاً، والرقابة عليها. ويساعد الإدارة في اتخاذ قرارات: الشراء (من أين وبكم)، الإنتاج (كم تنتج)، والتسعير (بكم نبيع).</p>
+                                    <p>• <strong>مفهوم القيمة المضافة:</strong> هي القيمة الإضافية الناتجة عن عمليات الإنتاج نفسها (الفرق بين قيمة المنتج النهائي وقيمة المواد الخام الداخلة فيه).</p>
+                                    <p>• <strong>عناصر التكاليف الصناعية الثلاثة:</strong></p>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                        <div class="p-2.5 bg-slate-50 border rounded-lg">
+                                            <strong class="text-brand-800 block mb-1">1. مواد مباشرة:</strong> المواد الخام التي تدخل مباشرة في تكوين المنتج النهائي ويمكن تتبعها بسهولة.
+                                        </div>
+                                        <div class="p-2.5 bg-slate-50 border rounded-lg">
+                                            <strong class="text-brand-800 block mb-1">2. أجور مباشرة:</strong> أجور العمالة التي تعمل مباشرة على تصنيع المنتج وترتبط بتكلفة الموارد البشرية.
+                                        </div>
+                                        <div class="p-2.5 bg-slate-50 border rounded-lg">
+                                            <strong class="text-brand-800 block mb-1">3. مصاريف صناعية غير مباشرة:</strong> باقي تكاليف التشغيل الصناعي التي لا يمكن تتبعها مباشرة كالمحركات والصيانة.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 17 -->
+                    <div class="question-block border border-slate-200 rounded-xl p-4 bg-slate-50/50 hover:bg-white hover:border-brand-300 transition-all">
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" onchange="updateProgress()" class="q-checkbox mt-1.5 w-5 h-5 text-brand-600 rounded focus:ring-brand-500 cursor-pointer accent-brand-600">
+                            <div class="w-full">
+                                <div class="flex justify-between items-start gap-2">
+                                    <h3 class="font-bold text-slate-900 text-base md:text-lg mb-2">س17: قارني بين أنواع مراكز المسؤولية الثلاثة وما هي أساليب تقييم أصول مراكز الاستثمار؟</h3>
+                                    <button onclick="toggleSingleAnswer(this)" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded-md shrink-0 font-semibold">عرض / إخفاء</button>
+                                </div>
+                                <div class="answer-body bg-white p-4 rounded-xl border border-slate-200 text-sm text-slate-800 leading-relaxed mt-2 shadow-sm space-y-3">
+                                    <div class="p-3 bg-slate-50 border rounded-xl">
+                                        <div class="font-bold text-brand-800">1. مركز التكلفة (Cost Center):</div>
+                                        <div>مديره يتحكم بالتكاليف فقط دون الإيرادات؛ يُقيم بمقارنة التكاليف الفعلية بالتكاليف المخططة له فقط.</div>
+                                    </div>
+                                    <div class="p-3 bg-slate-50 border rounded-xl">
+                                        <div class="font-bold text-brand-800">2. مركز الربحية (Profit Center):</div>
+                                        <div>مديره يتحكم بالإيرادات والمصروفات معاً؛ يُقيم على أساس تحقيقه للربح أو الخسارة الفعلية.</div>
+                                    </div>
+                                    <div class="p-3 bg-slate-50 border rounded-xl">
+                                        <div class="font-bold text-brand-800">3. مركز الاستثمار (Investment Center):</div>
+                                        <div>مديره يتحكم بالإيرادات والمصروفات وقرارات الاستثمار بالأصول أيضاً؛ يُقيم بالعائد على الاستثمار (ROI).</div>
+                                    </div>
+                                    <div class="bg-indigo-50 p-3 rounded-xl border border-indigo-100 text-xs text-indigo-900 space-y-1">
+                                        <div class="font-extrabold text-indigo-950">أساليب تقييم أصول مراكز الاستثمار الثلاثة:</div>
+                                        <p>1. <strong>التكلفة التاريخية المعدلة بالتغيرات في المستوى العام للأسعار:</strong> تعديل عام حسب التضخم.</p>
+                                        <p>2. <strong>القيمة الجارية:</strong> سعر نفس الأصل بحالته الحالية بالسوق اليوم.</p>
+                                        <p>3. <strong>التكلفة الإحلالية:</strong> تكلفة إحلاله بأصل بديل معاصر بنفس الطاقة الإنتاجية (أي أنها لا تعتمد دائماً على التكلفة التاريخية وحدها).</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 18 -->
+                    <div class="question-block border border-slate-200 rounded-xl p-4 bg-slate-50/50 hover:bg-white hover:border-brand-300 transition-all">
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" onchange="updateProgress()" class="q-checkbox mt-1.5 w-5 h-5 text-brand-600 rounded focus:ring-brand-500 cursor-pointer accent-brand-600">
+                            <div class="w-full">
+                                <div class="flex justify-between items-start gap-2">
+                                    <h3 class="font-bold text-slate-900 text-base md:text-lg mb-2">س18: عرّفي التحليل المالي واذكُري أساليبه الثلاثة وأهدافه؟</h3>
+                                    <button onclick="toggleSingleAnswer(this)" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded-md shrink-0 font-semibold">عرض / إخفاء</button>
+                                </div>
+                                <div class="answer-body bg-white p-4 rounded-xl border border-slate-200 text-sm text-slate-800 leading-relaxed mt-2 shadow-sm space-y-3">
+                                    <p>• <strong>تعريف التحليل المالي:</strong> دراسة القوائم المالية بعد تبويبها باستخدام أساليب تحليل مختلفة، بهدف فهم أداء المنشأة والتغيرات التي طرأت عليها.</p>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                        <div class="p-2.5 border rounded bg-slate-50">
+                                            <strong class="text-brand-800 block mb-1">التحليل الرأسي:</strong>
+                                            دراسة كل بند كنسبة من الإجمالي بنفس الفترة المالية.
+                                        </div>
+                                        <div class="p-2.5 border rounded bg-slate-50">
+                                            <strong class="text-brand-800 block mb-1">التحليل الأفقي:</strong>
+                                            مقارنة نفس البند عبر عدة فترات مالية متتالية.
+                                        </div>
+                                        <div class="p-2.5 border rounded bg-slate-50">
+                                            <strong class="text-brand-800 block mb-1">النسب المالية:</strong>
+                                            إيجاد علاقات رقمية بين بنود مختلفة في القوائم.
+                                        </div>
+                                    </div>
+                                    <p>• <strong>أهداف التحليل المالي ومجالات الاستفادة:</strong> تفسير البيانات المحاسبية، تقييم الأداء السابق، تحديد المشكلات واقتراح الحلول لها، المساهمة في التخطيط المستقبلي، تقييم الكفاءة الاقتصادية والإدارية، وتحديد مصادر التمويل المناسبة وتقييم الأنشطة الاستثمارية والتشغيلية.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
-
-
-                <!-- Q18 -->
-                <div class="question-card bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
-
-                    <div class="p-6">
-
-                        <div class="flex items-start gap-4">
-
-                            <div class="w-10 h-10 rounded-xl bg-pink-100 text-pink-700 flex items-center justify-center font-bold shrink-0">
-                                18
-                            </div>
-
-                            <div class="flex-1">
-
-                                <h2 class="text-xl font-bold text-gray-800 mb-4">
-                                    ما المقصود بالتحليل المالي؟
-                                </h2>
-
-                                <div class="answer-box bg-pink-50 border-r-4 border-pink-500 rounded-xl p-5">
-
-                                    <p class="text-gray-700 leading-8">
-                                        التحليل المالي هو عملية دراسة وتحليل البيانات والقوائم المالية بهدف تقييم أداء المنشأة ووضعها المالي، والمساعدة في اتخاذ القرارات.
-                                    </p>
-
-                                </div>
-
-                                <label class="flex items-center gap-2 mt-4 cursor-pointer">
-
-                                    <input
-                                        type="checkbox"
-                                        class="progress-check w-5 h-5 text-pink-600 rounded"
-                                        onchange="updateProgress()"
-                                    >
-
-                                    <span class="text-gray-600">
-                                        تمت المراجعة
-                                    </span>
-
-                                </label>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
             </div>
 
         </div>
+    </main>
 
-    </section>
-
-
-    <!-- Footer -->
-    <footer class="text-center py-8 text-gray-500">
-
-        <p>
-            مراجعة نظم المعلومات المحاسبية — بالتوفيق 🌷
-        </p>
-
+    <!-- Footer Section -->
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500 font-semibold">
+        جميع النصوص والتعاريف والتقسيمات مأخوذة بالنص الحرفي والمباشر من سلايدات مقرر نظم المعلومات المحاسبية.
     </footer>
 
-
     <script>
+        let hideMode = false;
 
-        // Update Progress
         function updateProgress() {
-
-            const checks = document.querySelectorAll('.progress-check');
-
-            const checked = document.querySelectorAll('.progress-check:checked');
-
-            const total = checks.length;
-
-            const completed = checked.length;
-
-            const percentage = total === 0
-                ? 0
-                : (completed / total) * 100;
-
-            document.getElementById('progressText').textContent =
-                `${completed} / ${total}`;
-
-            document.getElementById('progressBar').style.width =
-                `${percentage}%`;
+            const checkboxes = document.querySelectorAll('.q-checkbox');
+            const checked = document.querySelectorAll('.q-checkbox:checked');
+            const percentage = checkboxes.length ? Math.round((checked.length / checkboxes.length) * 100) : 0;
+            
+            document.getElementById('progressText').innerText = percentage + '%';
+            document.getElementById('progressBar').style.width = percentage + '%';
         }
 
-
-        // Search
-        document
-            .getElementById('searchInput')
-            .addEventListener('input', function () {
-
-                const searchTerm = this.value.toLowerCase().trim();
-
-                const cards = document.querySelectorAll('.question-card');
-
-                cards.forEach(card => {
-
-                    const text = card.textContent.toLowerCase();
-
-                    if (text.includes(searchTerm)) {
-                        card.style.display = '';
-                    } else {
-                        card.style.display = 'none';
-                    }
-
-                });
-
-            });
-
-
-        // Filter Categories
-        function filterCategory(category) {
-
-            const sections = document.querySelectorAll(
-                '#questionsContainer > div'
-            );
-
-            const buttons = document.querySelectorAll('.category-btn');
-
-            buttons.forEach(button => {
-
-                button.classList.remove(
-                    'bg-indigo-600',
-                    'text-white'
-                );
-
-                button.classList.add(
-                    'bg-gray-100',
-                    'text-gray-700'
-                );
-
-            });
-
-
-            event.target.classList.remove(
-                'bg-gray-100',
-                'text-gray-700'
-            );
-
-            event.target.classList.add(
-                'bg-indigo-600',
-                'text-white'
-            );
-
-
-            sections.forEach(section => {
-
-                if (
-                    category === 'all' ||
-                    section.classList.contains(category)
-                ) {
-                    section.style.display = '';
+        function filterQuestions() {
+            const input = document.getElementById('searchInput').value.toLowerCase().trim();
+            const questions = document.querySelectorAll('.question-block');
+            
+            questions.forEach(q => {
+                const text = q.innerText.toLowerCase();
+                if(text.includes(input)) {
+                    q.style.display = 'block';
                 } else {
-                    section.style.display = 'none';
+                    q.style.display = 'none';
                 }
-
             });
-
         }
 
+        function filterCategory(catClass) {
+            const sections = document.querySelectorAll('.section-card');
+            const buttons = document.querySelectorAll('.cat-btn');
 
-        // Toggle Answers
-        let answersHidden = false;
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white');
+                btn.classList.add('bg-slate-100', 'text-slate-600');
+            });
+
+            event.target.classList.remove('bg-slate-100', 'text-slate-600');
+            event.target.classList.add('bg-brand-600', 'text-white');
+
+            sections.forEach(sec => {
+                if(catClass === 'all' || sec.classList.contains(catClass)) {
+                    sec.style.display = 'block';
+                } else {
+                    sec.style.display = 'none';
+                }
+            });
+        }
 
         function toggleAnswersMode() {
-
-            const answers = document.querySelectorAll('.answer-box');
-
-            const button = document.getElementById('answersToggle');
-
-            answersHidden = !answersHidden;
-
-            answers.forEach(answer => {
-
-                answer.style.display =
-                    answersHidden ? 'none' : '';
-
-            });
-
-            button.textContent =
-                answersHidden
-                    ? 'إظهار الإجابات'
-                    : 'إخفاء الإجابات';
-
+            hideMode = !hideMode;
+            const container = document.getElementById('questionsContainer');
+            const btnText = document.getElementById('toggleAnswersText');
+            
+            if(hideMode) {
+                container.classList.add('hide-answer');
+                btnText.innerText = "إظهار الإجابات";
+            } else {
+                container.classList.remove('hide-answer');
+                btnText.innerText = "إخفاء الإجابات للتسميع";
+            }
         }
 
+        function toggleSingleAnswer(btn) {
+            const questionBlock = btn.closest('.question-block');
+            const answerBody = questionBlock.querySelector('.answer-body');
+            
+            if (answerBody.style.display === 'none') {
+                answerBody.style.display = 'block';
+            } else {
+                answerBody.style.display = 'none';
+            }
+        }
 
-        // Expand All
         function expandAll() {
-
-            const answers = document.querySelectorAll('.answer-box');
-
-            answers.forEach(answer => {
-
-                answer.style.display = '';
-
-            });
-
-            answersHidden = false;
-
-            document.getElementById('answersToggle').textContent =
-                'إخفاء الإجابات';
-
+            const answers = document.querySelectorAll('.answer-body');
+            answers.forEach(a => a.style.display = 'block');
+            document.getElementById('questionsContainer').classList.remove('hide-answer');
+            hideMode = false;
+            document.getElementById('toggleAnswersText').innerText = "إخفاء الإجابات للتسميع";
         }
 
-
-        // Collapse All
         function collapseAll() {
-
-            const answers = document.querySelectorAll('.answer-box');
-
-            answers.forEach(answer => {
-
-                answer.style.display = 'none';
-
-            });
-
-            answersHidden = true;
-
-            document.getElementById('answersToggle').textContent =
-                'إظهار الإجابات';
-
+            const answers = document.querySelectorAll('.answer-body');
+            answers.forEach(a => a.style.display = 'none');
         }
 
-
-        // Initial Progress
-        window.onload = function () {
-
+        window.onload = function() {
             updateProgress();
-
         };
-
     </script>
-
 </body>
 </html>
